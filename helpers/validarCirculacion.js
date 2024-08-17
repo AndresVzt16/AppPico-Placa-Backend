@@ -36,39 +36,40 @@ const restricciones = {
     },
   };
   
-const restriccion = (dia, digito, hora) => {
-  if (!restricciones[dia]) {
-    console.error(`Día no válido: ${dia}`);
-    return false; // Retorna falso si el día no es válido
-  }
-
-  const [horaIngresada, minutosIngresados] = hora.split(":").map(Number);
-
-  if (restricciones[dia].digitos.includes(digito)) {
-    const horasRestringidas = restricciones[dia].horas;
-
-    const [horaInicioMañana, minutoInicioMañana] = horasRestringidas.mañana[0].split(":").map(Number);
-    const [horaFinMañana, minutoFinMañana] = horasRestringidas.mañana[1].split(":").map(Number);
-    const [horaInicioTarde, minutoInicioTarde] = horasRestringidas.tarde[0].split(":").map(Number);
-    const [horaFinTarde, minutoFinTarde] = horasRestringidas.tarde[1].split(":").map(Number);
-
-    const restringidoMañana =
-      (horaIngresada > horaInicioMañana || (horaIngresada === horaInicioMañana && minutosIngresados >= minutoInicioMañana)) &&
-      (horaIngresada < horaFinMañana || (horaIngresada === horaFinMañana && minutosIngresados <= minutoFinMañana));
-
-    const restringidoTarde =
-      (horaIngresada > horaInicioTarde || (horaIngresada === horaInicioTarde && minutosIngresados >= minutoInicioTarde)) &&
-      (horaIngresada < horaFinTarde || (horaIngresada === horaFinTarde && minutosIngresados <= minutoFinTarde));
-
-    if (restringidoMañana || restringidoTarde) {
-      return true; // El vehículo NO puede circular
-    } else {
-      return false; // El vehículo puede circular
+  const restriccion = (dia, digito, hora) => {
+    if (!restricciones[dia]) {
+      console.error(`Día no válido: ${dia}`);
+      return false; // Retorna falso si el día no es válido
     }
-  } else {
-    return false; // No tiene Pico y Placa
-  }
-};
+  
+    const [horaIngresada, minutosIngresados] = hora.split(":").map(Number);
+  
+    if (restricciones[dia].digitos.includes(digito)) {
+      const horasRestringidas = restricciones[dia].horas;
+  
+      const [horaInicioMañana, minutoInicioMañana] = horasRestringidas.mañana[0].split(":").map(Number);
+      const [horaFinMañana, minutoFinMañana] = horasRestringidas.mañana[1].split(":").map(Number);
+      const [horaInicioTarde, minutoInicioTarde] = horasRestringidas.tarde[0].split(":").map(Number);
+      const [horaFinTarde, minutoFinTarde] = horasRestringidas.tarde[1].split(":").map(Number);
+  
+      const restringidoMañana =
+        (horaIngresada > horaInicioMañana || (horaIngresada === horaInicioMañana && minutosIngresados >= minutoInicioMañana)) &&
+        (horaIngresada < horaFinMañana || (horaIngresada === horaFinMañana && minutosIngresados <= minutoFinMañana));
+  
+      const restringidoTarde =
+        (horaIngresada > horaInicioTarde || (horaIngresada === horaInicioTarde && minutosIngresados >= minutoInicioTarde)) &&
+        (horaIngresada < horaFinTarde || (horaIngresada === horaFinTarde && minutosIngresados <= minutoFinTarde));
+  
+      if (restringidoMañana || restringidoTarde) {
+        return true; // El vehículo NO puede circular
+      } else {
+        return false; // El vehículo puede circular
+      }
+    } else {
+      return false; // No tiene Pico y Placa
+    }
+  };
+  
 
   export default restriccion;
   
