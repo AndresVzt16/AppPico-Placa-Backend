@@ -11,24 +11,31 @@ const verReportes = async(req, res) => {
     }
 }
 
-const consultarPlaca = async(req,res) => {
-    const{fecha, placa, hora} = req.body
+const consultarPlaca = async(req, res) => {
+    const { fecha, placa, hora } = req.body;
 
-    
-    const dia = obtenerDiaDeLaSemana(fecha)
-    const digito = obtenerDigito(placa)
+    // Validaciones previas
+    if (!fecha || !placa || !hora) {
+        return res.status(400).json({ msg: "Todos los campos (fecha, placa, hora) son obligatorios" });
+    }
 
-    const restringido = restriccion(dia, digito, hora)
- 
+    const dia = obtenerDiaDeLaSemana(fecha);
+    const digito = obtenerDigito(placa);
+
+    // Validar si el día es válido antes de llamar a restriccion
+    if (!dia || !restricciones[dia]) {
+        return res.status(400).json({ msg: "El día proporcionado no es válido o no está sujeto a restricciones" });
+    }
+
+    const restringido = restriccion(dia, digito, hora);
 
     try {
-        const reporteGenerado = await Reporte.create({fecha, placa, hora, restringido})
-        res.json({reporteGenerado})
-        
+        const reporteGenerado = await Reporte.create({ fecha, placa, hora, restringido });
+        res.json({ reporteGenerado });
     } catch (error) {
-        return res.status(400).json({msg:"Ocurrio un error al registrar"})
+        return res.status(400).json({ msg: "Ocurrió un error al registrar el reporte" });
     }
-}
+};
 
 
 export{

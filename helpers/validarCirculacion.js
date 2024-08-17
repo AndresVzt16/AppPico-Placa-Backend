@@ -37,22 +37,25 @@ const restricciones = {
   };
   
   const restriccion = (dia, digito, hora) => {
+    if (!restricciones[dia]) {
+      console.error(`Día no válido: ${dia}`);
+      return false; // Retorna falso si el día no es válido
+    }
+  
     const [horaIngresada, minutosIngresados] = hora.split(":").map(Number);
   
     if (restricciones[dia].digitos.includes(digito)) {
       const horasRestringidas = restricciones[dia].horas;
-      
+  
       const [horaInicioMañana, minutoInicioMañana] = horasRestringidas.mañana[0].split(":").map(Number);
       const [horaFinMañana, minutoFinMañana] = horasRestringidas.mañana[1].split(":").map(Number);
       const [horaInicioTarde, minutoInicioTarde] = horasRestringidas.tarde[0].split(":").map(Number);
       const [horaFinTarde, minutoFinTarde] = horasRestringidas.tarde[1].split(":").map(Number);
   
-      // Comprobar horario de la mañana
       const restringidoMañana =
         (horaIngresada > horaInicioMañana || (horaIngresada === horaInicioMañana && minutosIngresados >= minutoInicioMañana)) &&
         (horaIngresada < horaFinMañana || (horaIngresada === horaFinMañana && minutosIngresados <= minutoFinMañana));
   
-      // Comprobar horario de la tarde
       const restringidoTarde =
         (horaIngresada > horaInicioTarde || (horaIngresada === horaInicioTarde && minutosIngresados >= minutoInicioTarde)) &&
         (horaIngresada < horaFinTarde || (horaIngresada === horaFinTarde && minutosIngresados <= minutoFinTarde));
