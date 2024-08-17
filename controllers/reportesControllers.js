@@ -22,9 +22,9 @@ const consultarPlaca = async(req, res) => {
     const dia = obtenerDiaDeLaSemana(fecha);
     const digito = obtenerDigito(placa);
 
-    // Validar si el día es válido antes de llamar a restriccion
-    if (!dia || !restricciones[dia]) {
-        return res.status(400).json({ msg: "El día proporcionado no es válido o no está sujeto a restricciones" });
+    // No es necesario verificar `restricciones[dia]` aquí, ya que eso se maneja dentro de `restriccion`.
+    if (!dia) {
+        return res.status(400).json({ msg: "El día proporcionado no es válido" });
     }
 
     const restringido = restriccion(dia, digito, hora);
